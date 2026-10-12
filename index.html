@@ -29,12 +29,14 @@
           );
         }
       }(window.location));
-      // 3. Fallback for unbundled GitHub Pages root deployment:
-      // If the unbundled root source index.html is served directly on GitHub Pages, redirect to /docs/ bundle
+      // 3. Fallback for unbundled GitHub Pages deployment:
+      // When raw source index.html is served from repository root instead of /docs/ or GitHub Actions,
+      // redirect immediately to /docs/ where the production bundle is located.
       (function() {
         if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
           var p = window.location.pathname;
-          if (!p.includes('/docs') && !p.includes('/dist') && !document.querySelector('script[src*="assets/"]')) {
+          // Only redirect if at repo root and not already inside /docs/ or /dist/
+          if (!p.includes('/docs') && !p.includes('/dist')) {
             var base = p.replace(/\/index\.html$/, '').replace(/\/$/, '');
             window.location.replace(base + '/docs/' + window.location.search + window.location.hash);
           }

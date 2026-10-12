@@ -9,8 +9,42 @@
     <meta property="og:description" content="Anmol Pure Mineral Water (APMW) - Complete 19L drinking water plant management, bottle ledger tracking, production refilling, customer balance ledger, route delivery, and vendor management software." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" crossorigin src="./assets/index-BRechYHw.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CX64yme7.css">
+    <link rel="icon" type="image/png" href="./anmol-logo.png" />
+    <script>
+      // 1. Ensure trailing slash for repository subfolder on GitHub Pages
+      if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+        var path = window.location.pathname;
+        if (!path.endsWith('/') && !path.split('/').pop().includes('.')) {
+          window.location.replace(path + '/' + window.location.search + window.location.hash);
+        }
+      }
+      // 2. Restore SPA path if redirected from 404.html
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+      // 3. Fallback for unbundled GitHub Pages deployment:
+      // When raw source index.html is served from repository root instead of /docs/ or GitHub Actions,
+      // redirect immediately to /docs/ where the production bundle is located.
+      (function() {
+        if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+          var p = window.location.pathname;
+          // Only redirect if at repo root and not already inside /docs/ or /dist/
+          if (!p.includes('/docs') && !p.includes('/dist')) {
+            var base = p.replace(/\/index\.html$/, '').replace(/\/$/, '');
+            window.location.replace(base + '/docs/' + window.location.search + window.location.hash);
+          }
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-BJlrpi6F.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-8aTq-bXA.css">
   </head>
   <body>
     <div id="root"></div>
