@@ -1,0 +1,6 @@
+{
+  "name": "Anmol Pure Mineral Water",
+  "description": "Anmol Pure Mineral Water (APMW) - Complete 19L drinking water plant management, bottle ledger tracking, production refilling, customer balance ledger, route delivery, and vendor management software.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
