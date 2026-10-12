@@ -47,14 +47,30 @@ function getCustomerAuthHeaders(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+const isStaticOrGitHub =
+  typeof window !== 'undefined' &&
+  (window.location.hostname.endsWith('github.io') ||
+   window.location.hostname.includes('pages.dev') ||
+   window.location.hostname.includes('vercel.app') ||
+   window.location.hostname.includes('netlify.app') ||
+   window.location.protocol === 'file:' ||
+   sessionStorage.getItem('water_backend_mode') === 'offline');
+
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     let errorMsg = `Server error (${res.status})`;
     try {
-      const errJson = await res.json();
-      if (errJson.error) errorMsg = errJson.error;
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const errJson = await res.json();
+        if (errJson.error) errorMsg = errJson.error;
+      }
     } catch {}
     throw new Error(errorMsg);
+  }
+  const contentType = res.headers.get('content-type') || '';
+  if (contentType && !contentType.includes('application/json')) {
+    throw new Error('Non-JSON response from server (static host fallback)');
   }
   return res.json();
 }
@@ -65,10 +81,18 @@ async function handleResponse<T>(res: Response): Promise<T> {
  * where the backend server process is not running.
  */
 async function callWithFallback<T>(fetchFn: () => Promise<T>, fallbackFn: () => Promise<T>): Promise<T> {
+  if (isStaticOrGitHub) {
+    return fallbackFn();
+  }
   try {
     return await fetchFn();
   } catch (err) {
     // If backend is unavailable (network error, 404 on static host, GitHub Pages, etc.)
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('water_backend_mode', 'offline');
+      } catch {}
+    }
     return await fallbackFn();
   }
 }
